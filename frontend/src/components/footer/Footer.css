@@ -1,0 +1,106 @@
+.footer { 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    gap: 20px; 
+    padding: 20px 10px;
+    background-color: #f8f8f8;
+} 
+
+.footer-logo { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+} 
+
+.footer-logo p { 
+    color: #383838; 
+    font-size: 36px; 
+    font-weight: 700; 
+}
+
+.footer-logo img {
+    height: 60px;
+}
+
+.footer-links { 
+    display: flex; 
+    list-style: none; 
+    gap: 40px; 
+    padding: 0;
+    margin: 0;
+    font-size: 18px; 
+    color: #252525; 
+} 
+
+.footer-links li { 
+    position: relative;
+    cursor: pointer; 
+    transition: all 0.3s ease;
+}
+
+.footer-links li:hover {
+    color: #4CAF50;
+}
+
+/* Animated underline on hover */
+.footer-links li::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    width: 0;
+    height: 2px;
+    background-color: #4CAF50;
+    transition: width 0.3s;
+}
+
+.footer-links li:hover::after {
+    width: 100%;
+}
+
+.footer-social-icon { 
+    display: flex; 
+    gap: 20px; 
+}
+
+.footer-icons-container {
+    height: 50px;
+    width: 50px;
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+}
+
+.footer-icons-container img {
+    height: 30px;
+    width: 30px;
+    object-fit: contain;
+}
+
+.footer-icons-container:hover {
+    background-color: #e0e0e0;
+}
+
+.footer-copyright { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    gap: 20px; 
+    width: 100%; 
+    color: #1a1a1a; 
+    font-size: 16px;
+}
+
+.footer-copyright hr {
+    width: 100%;
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 0;
+}

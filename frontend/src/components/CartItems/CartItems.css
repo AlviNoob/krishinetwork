@@ -1,0 +1,78 @@
+/* Main Container Styling */
+.cartitems {
+    margin: 20px auto;
+    padding: 30px;
+    max-width: 800px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Header Row */
+.cartitems-format-main {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr; /* Properly defined column widths */
+    gap: 10px;
+    padding-bottom: 10px;
+    font-weight: bold;
+    font-size: 16px;
+    color: #333;
+    border-bottom: 2px solid #e5e5e5;
+    text-align: center; /* Centers text inside columns */
+}
+
+/* Product Rows */
+.cartitems-format {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 1fr; /* Matches header column layout */
+    gap: 10px;
+    align-items: center;
+    margin: 15px 0;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cartitems-format:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Product Image */
+.cart-icon-product-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+/* Editable Quantity Input */
+.cartitems-quantity-input {
+    width: 50px;
+    padding: 5px;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Remove Button Styling */
+.cart-remove-button {
+    background-color: transparent;
+    border: none;
+    color: #e63946;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    transition: color 0.2s ease;
+}
+
+.cart-remove-button:hover {
+    color: #d62828;
+}
