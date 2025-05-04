@@ -1,0 +1,35 @@
+.buy-catagory {
+  padding: 40px 60px;
+  background: #f5f7fa;
+  min-height: 100vh;
+}
+
+.buycategory-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Bigger Cards */
+  gap: 40px; /* More gap between items */
+  justify-items: center;
+}
+
+.buycategory-products .item {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  width: 100%;
+  max-width: 320px;
+}
+
+.buycategory-products .item:hover {
+  transform: translateY(-10px) scale(1.02);
+}
+
+.buycategory-products .item img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: 15px;
+  margin-bottom: 20px;
+}

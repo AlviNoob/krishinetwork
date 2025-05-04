@@ -1,0 +1,64 @@
+/* LoginSignup.css */
+.loginsignup {
+    font-family: Arial, sans-serif;
+    color: #333;
+  }
+  
+  .loginsignup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .role-selection button {
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .role-selection button.active {
+    background-color: #007BFF;
+    color: #fff;
+  }
+  
+  .loginsignup-fields input {
+    margin: 10px 0;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .continue-btn {
+    margin-top: 20px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #28a745;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .loginsignup-login span {
+    color: #007BFF;
+    cursor: pointer;
+  }
+  
+  .loginsignup-agree {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .loginsignup-agree input {
+    margin-right: 10px;
+  }
+  
