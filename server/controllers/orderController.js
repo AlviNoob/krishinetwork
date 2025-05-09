@@ -1,6 +1,6 @@
 import Order from "../models/Order.js";
 
-
+// Place a new order
 export const placeOrder = async (req, res) => {
   const { userId, address, items, amount, paymentType, isPaid } = req.body;
 
@@ -39,7 +39,7 @@ export const placeOrder = async (req, res) => {
   }
 };
 
-
+// Get all orders (admin use)
 export const getAllOrders = async (req, res) => {
   try {
     const orders = await Order.find({});
@@ -49,12 +49,11 @@ export const getAllOrders = async (req, res) => {
   }
 };
 
-
+// Get orders by user ID
 export const getUserOrders = async (req, res) => {
   try {
     const { userId } = req.params;
 
-    // Fetch orders only for the specific user
     const orders = await Order.find({ userId });
 
     if (orders.length === 0) {
@@ -64,5 +63,32 @@ export const getUserOrders = async (req, res) => {
     res.status(200).json({ success: true, orders });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
+  }
+};
+
+// ✅ Update order status
+export const updateOrderStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const updatedOrder = await Order.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    );
+
+    if (!updatedOrder) {
+      return res.status(404).json({ success: false, message: "Order not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Order status updated successfully",
+      order: updatedOrder,
+    });
+  } catch (error) {
+    console.error("Error updating order status:", error);
+    res.status(500).json({ success: false, message: error.message });
   }
 };
