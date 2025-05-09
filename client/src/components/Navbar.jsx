@@ -4,6 +4,7 @@ import cart_icon from '../Assets/cart_icon.png';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 
+
 const Navbar = () => {
   const {
     getTotalCartItems,
@@ -21,9 +22,10 @@ const Navbar = () => {
   useEffect(() => {
     const currentPath = location.pathname.split('/')[1];
     const capitalized = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
-    if (["Buy", "Sell", "Rent", "Support", "Orders"].includes(capitalized)) {
+    if (["Buy", "Sell", "Rent", "Support", "Orders", "Blog", "Education"].includes(capitalized)) {
       setMenu(capitalized);
-    } else {
+    }
+     else {
       setMenu("Home");
     }
   }, [location]);
@@ -53,16 +55,17 @@ const Navbar = () => {
       </div>
 
       <ul className="flex gap-5 text-sm font-bold text-green-600 md:text-base flex-wrap">
-        {["Home", "Buy", "Sell", "Rent", "Support"].map((item) => (
-          <li key={item} onClick={() => setMenu(item)}>
-            <Link
-              to={`/${item.toLowerCase()}`}
-              className={`hover:text-green-600 ${menu === item ? "border-b-2 border-green-600" : ""}`}
-            >
-              {item}
-            </Link>
-          </li>
-        ))}
+      {["Home", "Buy", "Sell", "Rent", "Support", "Blog", "Education"].map((item) => (
+        <li key={item} onClick={() => setMenu(item)}>
+           <Link
+            to={`/${item.toLowerCase()}`}
+            className={`hover:text-green-600 ${menu === item ? "border-b-2 border-green-600" : ""}`}
+    >
+      {item}
+    </Link>
+  </li>
+))}
+
         {user && (
           <li onClick={() => setMenu("Orders")}>
             <Link

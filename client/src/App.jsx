@@ -13,7 +13,11 @@ import { ShopContext } from './context/ShopContext';
 import DescriptionEditor from './components/DescriptionBox';
 import Orders from './components/order';
 import UserDashboard from './pages/UserDashboard';
-import ExpertDashboard from './pages/ExpertDashboard';
+import ExpertDashboard from './components/ExpertDashboard';
+import Blog from "./pages/Blog"; 
+import Education from './pages/Education'; // Adjust path if needed
+
+
 
 function App() {
   const { user } = useContext(ShopContext); // To manage user state
@@ -44,7 +48,10 @@ function App() {
           <Route path="/sell" element={<BuyCatagory catagory="sell" />} />
           <Route path="/rent" element={<BuyCatagory catagory="rent" />} />
           <Route path="/support" element={<Support />} />
-          
+          <Route path="/" element={<Home />} />
+          <Route path="/education" element={<Education />} />
+          <Route path="/blog" element={<Blog />} /> {/* Add the Blog route */}
+
           {/* Product Routes */}
           <Route path="/product" element={<Product />}>
             <Route path=":productId" element={<Product />} />
@@ -58,6 +65,7 @@ function App() {
 
           {/* Orders Route ✅ Added */}
           <Route path="/orders" element={<Orders />} />
+
 
           {/* Dashboard Routes */}
           <Route path="/dashboard/user" element={<UserDashboard />} />
