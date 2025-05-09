@@ -32,11 +32,10 @@ const Blog = () => {
     }
 
     try {
-      await axios.post('http://localhost:4000/api/blogs', {
+      const res = await axios.post('http://localhost:4000/api/blogs', {
         ...newBlog,
         author: loggedInUser.name,
       });
-      console.log('Fetched blogs:', res.data);
 
       console.log('Post response:', res.data);
       setNewBlog({ title: '', content: '' });
@@ -87,7 +86,10 @@ const Blog = () => {
         onChange={(e) => setNewBlog({ ...newBlog, content: e.target.value })}
         className="border p-2 w-full mb-2"
       />
-      <button onClick={handlePost} className="bg-green-600 text-white px-4 py-2 rounded">
+      <button
+        onClick={handlePost}
+        className="px-4 py-2 bg-green-600 text-white rounded mb-6"
+      >
         Post
       </button>
 

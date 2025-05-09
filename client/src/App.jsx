@@ -15,10 +15,6 @@ import Orders from './components/order';
 import UserDashboard from './pages/UserDashboard';
 import ExpertDashboard from './components/ExpertDashboard';
 import Blog from "./pages/Blog"; 
-import Courses from './pages/Courses';
-
-
-
 
 
 function App() {
@@ -52,7 +48,7 @@ function App() {
           <Route path="/support" element={<Support />} />
           <Route path="/" element={<Home />} />
           <Route path="/blog" element={<Blog />} /> {/* Add the Blog route */}
-          <Route path="/courses" element={<Courses />} />
+
           {/* Product Routes */}
           <Route path="/product" element={<Product />}>
             <Route path=":productId" element={<Product />} />

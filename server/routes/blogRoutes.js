@@ -1,6 +1,7 @@
-const express = require('express');
+import express from 'express';
+import Blog from '../models/Blog.js';
+
 const router = express.Router();
-const Blog = require('../models/Blog');
 
 // Create new blog
 router.post('/', async (req, res) => {
@@ -60,4 +61,4 @@ router.post('/:id/comment', async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
