@@ -23,57 +23,7 @@ const ExpertDashboard = () => {
   });
   const [photoPreview, setPhotoPreview] = useState(stored.photoUrl || "");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  
-  // Courses
-  const [courses, setCourses] = useState([]);
-
-  // 1) Redirect if not logged in
-  useEffect(() => {
-    if (!expertId) navigate("/login");
-  }, [expertId, navigate]);
-
-  // 2) Fetch expert profile
-  useEffect(() => {
-    if (!expertId) return;
-
-    fetch(`${API_BASE_URL}/expert/${expertId}`)
-      .then(res => {
-        if (!res.ok) throw new Error("Failed to load profile");
-        return res.json();
-      })
-      .then(data => {
-        setExpert(data);
-        setForm({
-          name: data.name,
-          specialization: data.specialization || "",
-          description: data.description || "",
-          password: "",
-          photoFile: null
-        });
-        setPhotoPreview(data.photoUrl || "");
-      })
-      .catch(err => setError(err.message));
-  }, [expertId]);
-
-  // Fetch courses
-  useEffect(() => {
-    fetchCourses();
-  }, []);
-
-  const fetchCourses = async () => {
-    try {
-      const res = await axios.get(`${API_BASE_URL}/api/courses`);
-      const allCourses = res.data;
-  
-      // Filter only the courses created by this expert
-      const myCourses = allCourses.filter(course => course.expertId === expertId);
-      setCourses(myCourses);
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-    }
-  };
-  
+  const [error, setError] = useState("");  
 
   // Handlers
   const handleChange = e => {

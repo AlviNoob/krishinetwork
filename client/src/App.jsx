@@ -15,6 +15,8 @@ import Orders from './components/order';
 import UserDashboard from './pages/UserDashboard';
 import ExpertDashboard from './components/ExpertDashboard';
 import Blog from "./pages/Blog"; 
+import Education from './pages/Education'; // Adjust path if needed
+
 
 
 function App() {
@@ -47,6 +49,7 @@ function App() {
           <Route path="/rent" element={<BuyCatagory catagory="rent" />} />
           <Route path="/support" element={<Support />} />
           <Route path="/" element={<Home />} />
+          <Route path="/education" element={<Education />} />
           <Route path="/blog" element={<Blog />} /> {/* Add the Blog route */}
 
           {/* Product Routes */}
