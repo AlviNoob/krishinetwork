@@ -15,7 +15,8 @@ import Orders from './components/order';
 import UserDashboard from './pages/UserDashboard';
 import ExpertDashboard from './components/ExpertDashboard';
 import Blog from "./pages/Blog"; 
-import Education from './pages/Education'; // Adjust path if needed
+import Education from './pages/Education'; 
+import ChatGPT from './components/ChatGPT';
 
 
 
@@ -51,6 +52,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/education" element={<Education />} />
           <Route path="/blog" element={<Blog />} /> {/* Add the Blog route */}
+          <Route path="/ai" element={<ChatGPT />} />
+
 
           {/* Product Routes */}
           <Route path="/product" element={<Product />}>
@@ -63,7 +66,7 @@ function App() {
           {/* Authentication Routes */}
           <Route path="/login" element={<LoginSignup />} />
 
-          {/* Orders Route ✅ Added */}
+          {/* Orders  */}
           <Route path="/orders" element={<Orders />} />
 
 

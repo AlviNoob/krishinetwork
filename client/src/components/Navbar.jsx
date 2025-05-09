@@ -20,9 +20,9 @@ const Navbar = () => {
 
   // Update selected menu based on current route
   useEffect(() => {
-    const currentPath = location.pathname.split('/')[1];
+    const currentPath = location.pathname.split('/')[1].toLowerCase();
     const capitalized = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
-    if (["Buy", "Sell", "Rent", "Support", "Orders", "Blog", "Education"].includes(capitalized)) {
+    if (["Buy", "Sell", "Rent", "Support", "Orders", "Blog", "Education", "AI"].includes(capitalized)) {
       setMenu(capitalized);
     }
      else {
@@ -55,7 +55,7 @@ const Navbar = () => {
       </div>
 
       <ul className="flex gap-5 text-sm font-bold text-green-600 md:text-base flex-wrap">
-      {["Home", "Buy", "Sell", "Rent", "Support", "Blog", "Education"].map((item) => (
+      {["Home", "Buy", "Sell", "Rent", "Support", "Blog", "Education", "AI"].map((item) => (
         <li key={item} onClick={() => setMenu(item)}>
            <Link
             to={`/${item.toLowerCase()}`}
