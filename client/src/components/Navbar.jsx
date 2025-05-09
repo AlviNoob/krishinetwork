@@ -4,7 +4,6 @@ import cart_icon from '../Assets/cart_icon.png';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 
-
 const Navbar = () => {
   const {
     getTotalCartItems,
@@ -14,36 +13,34 @@ const Navbar = () => {
     setIsExpert,
   } = useContext(ShopContext);
 
-  const [menu, setMenu] = useState("Home");
+  const [menu, setMenu] = useState('Home');
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Update selected menu based on current route
+  // Combined and expanded menu items from both files
+  const menuItems = ['Home', 'Buy', 'Sell', 'Rent', 'Support', 'Blog', 'Education', 'AI'];
+
   useEffect(() => {
-    const currentPath = location.pathname.split('/')[1];
+    const currentPath = location.pathname === '/' ? 'Home' : location.pathname.split('/')[1];
     const capitalized = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
-    if (["Buy", "Sell", "Rent", "Support", "Orders", "Blog", "Education"].includes(capitalized)) {
+    if (menuItems.includes(capitalized) || capitalized === 'Orders') {
       setMenu(capitalized);
-    }
-     else {
-      setMenu("Home");
+    } else {
+      setMenu('Home');
     }
   }, [location]);
 
-  // Logout handler with state refresh
   const handleLogout = () => {
-    localStorage.removeItem("loggedInUser");
-    localStorage.removeItem("isSeller");
-    localStorage.removeItem("isExpert");
+    localStorage.removeItem('loggedInUser');
+    localStorage.removeItem('isSeller');
+    localStorage.removeItem('isExpert');
 
     setUser(null);
     setIsSeller(false);
     setIsExpert(false);
 
-    navigate("/");
-    setMenu("Home");
-
-    // Force a refresh to ensure state updates immediately
+    navigate('/');
+    setMenu('Home');
     window.location.reload();
   };
 
@@ -55,22 +52,31 @@ const Navbar = () => {
       </div>
 
       <ul className="flex gap-5 text-sm font-bold text-green-600 md:text-base flex-wrap">
-      {["Home", "Buy", "Sell", "Rent", "Support", "Blog", "Education"].map((item) => (
-        <li key={item} onClick={() => setMenu(item)}>
-           <Link
-            to={`/${item.toLowerCase()}`}
-            className={`hover:text-green-600 ${menu === item ? "border-b-2 border-green-600" : ""}`}
-    >
-      {item}
-    </Link>
-  </li>
-))}
-
+        {menuItems.map((item) => {
+          const path = item.toLowerCase();
+          const linkPath = path === 'home' ? '/' : `/${path}`;
+          return (
+            <li key={item}>
+              <Link
+                to={linkPath}
+                onClick={() => setMenu(item)}
+                className={`hover:text-green-600 ${
+                  menu === item ? 'border-b-2 border-green-600' : ''
+                }`}
+              >
+                {item}
+              </Link>
+            </li>
+          );
+        })}
         {user && (
-          <li onClick={() => setMenu("Orders")}>
+          <li>
             <Link
               to="/orders"
-              className={`hover:text-green-600 ${menu === "Orders" ? "border-b-2 border-green-600" : ""}`}
+              onClick={() => setMenu('Orders')}
+              className={`hover:text-green-600 ${
+                menu === 'Orders' ? 'border-b-2 border-green-600' : ''
+              }`}
             >
               My Orders
             </Link>
