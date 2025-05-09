@@ -17,6 +17,7 @@ import ExpertDashboard from './components/ExpertDashboard';
 import Blog from "./pages/Blog"; 
 import Education from './pages/Education'; 
 import ChatGPT from './components/ChatGPT';
+import Messenger from './components/Messenger';
 
 
 
@@ -53,7 +54,7 @@ function App() {
           <Route path="/education" element={<Education />} />
           <Route path="/blog" element={<Blog />} /> {/* Add the Blog route */}
           <Route path="/ai" element={<ChatGPT />} />
-
+          <Route path="/messenger" element={<Messenger />} />;
 
           {/* Product Routes */}
           <Route path="/product" element={<Product />}>

@@ -15,6 +15,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import blogRoutes from './routes/blogRoutes.js'; 
 import educationRoutes from './routes/educationRoutes.js';
 import aiRoutes from './routes/aiRoutes.js';
+import messageRoutes from './routes/messageRoutes.js';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -44,6 +45,9 @@ app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/api/blogs", blogRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/education', educationRoutes);
+app.use('/api/messages', messageRoutes);
+
+
 // File Upload Setup using multer
 // const storage = multer.diskStorage({
 //     destination: (req, file, cb) => {

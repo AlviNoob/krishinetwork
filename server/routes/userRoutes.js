@@ -1,14 +1,29 @@
 import express from 'express';
+const router = express.Router();
 import { logout, signup, login, getUserById, updateUserProfile } from '../controllers/usercontrollers.js';
+import User from '../models/User.js'; // ✅ Make sure this is imported
 
-const userRoutes = express.Router();
+// Use `router`, not `userRoutes`
+router.post('/signup', signup);
+router.post('/login', login);
+router.get('/id/:userId', getUserById);
+router.get('/logout', logout);
+router.put('/:id', updateUserProfile);
 
-userRoutes.post('/signup', signup);
-userRoutes.post('/login', login);
-userRoutes.get('/id/:userId', getUserById); // 🔄 Change `id` to `userId`
-userRoutes.get('/logout', logout);
-userRoutes.put('/:id', updateUserProfile);
-export default userRoutes;
+// Search users by name or phone
+router.get('/search', async (req, res) => {
+  try {
+    const { query } = req.query;
+    const users = await User.find({
+      $or: [
+        { name: { $regex: query, $options: 'i' } },
+        { phone: { $regex: query, $options: 'i' } }
+      ]
+    }).limit(10);
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
 
-
-
+export default router;

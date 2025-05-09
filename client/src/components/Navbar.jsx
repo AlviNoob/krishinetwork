@@ -4,7 +4,6 @@ import cart_icon from '../Assets/cart_icon.png';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
 
-
 const Navbar = () => {
   const {
     getTotalCartItems,
@@ -18,19 +17,18 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Update selected menu based on current route
   useEffect(() => {
     const currentPath = location.pathname.split('/')[1].toLowerCase();
     const capitalized = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
-    if (["Buy", "Sell", "Rent", "Support", "Orders", "Blog", "Education", "AI"].includes(capitalized)) {
+    if (
+      ["Buy", "Sell", "Rent", "Support", "Orders", "Blog", "Education", "Ai", "Messenger"].includes(capitalized)
+    ) {
       setMenu(capitalized);
-    }
-     else {
+    } else {
       setMenu("Home");
     }
   }, [location]);
 
-  // Logout handler with state refresh
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
     localStorage.removeItem("isSeller");
@@ -43,7 +41,6 @@ const Navbar = () => {
     navigate("/");
     setMenu("Home");
 
-    // Force a refresh to ensure state updates immediately
     window.location.reload();
   };
 
@@ -55,16 +52,16 @@ const Navbar = () => {
       </div>
 
       <ul className="flex gap-5 text-sm font-bold text-green-600 md:text-base flex-wrap">
-      {["Home", "Buy", "Sell", "Rent", "Support", "Blog", "Education", "AI"].map((item) => (
-        <li key={item} onClick={() => setMenu(item)}>
-           <Link
-            to={`/${item.toLowerCase()}`}
-            className={`hover:text-green-600 ${menu === item ? "border-b-2 border-green-600" : ""}`}
-    >
-      {item}
-    </Link>
-  </li>
-))}
+        {["Home", "Buy", "Sell", "Rent", "Support", "Blog", "Education", "Ai", "Messenger"].map((item) => (
+          <li key={item} onClick={() => setMenu(item)}>
+            <Link
+              to={`/${item.toLowerCase()}`}
+              className={`hover:text-green-600 ${menu === item ? "border-b-2 border-green-600" : ""}`}
+            >
+              {item}
+            </Link>
+          </li>
+        ))}
 
         {user && (
           <li onClick={() => setMenu("Orders")}>
