@@ -20,6 +20,12 @@ export const ShopContextProvider = ({ children }) => {
   const [isSeller, setIsSeller] = useState(JSON.parse(localStorage.getItem("isSeller")) || false); // Seller status
   const [isExpert, setIsExpert] = useState(JSON.parse(localStorage.getItem("isExpert")) || false); // Expert status
 
+  // Wishlist state
+  const [wishlist, setWishlist] = useState(() => {
+    const stored = localStorage.getItem('wishlist');
+    return stored ? JSON.parse(stored) : [];
+  });
+
   // Fetch all products from the backend when the component mounts
   useEffect(() => {
     fetch("http://localhost:4000/products/all")
@@ -41,6 +47,11 @@ export const ShopContextProvider = ({ children }) => {
       localStorage.removeItem("isExpert");
     }
   }, [user]);
+
+  // Persist wishlist in localStorage
+  useEffect(() => {
+    localStorage.setItem('wishlist', JSON.stringify(wishlist));
+  }, [wishlist]);
 
   // Add an item to the cart
   const addToCart = (itemId) => {
@@ -97,6 +108,22 @@ export const ShopContextProvider = ({ children }) => {
     setIsExpert(false);
   };
 
+  // Add to wishlist
+  const addToWishlist = (itemId) => {
+    setWishlist((prev) => prev.includes(itemId) ? prev : [...prev, itemId]);
+  };
+
+  // Remove from wishlist
+  const removeFromWishlist = (itemId) => {
+    setWishlist((prev) => prev.filter((id) => id !== itemId));
+  };
+
+  // Check if item is wishlisted
+  const isWishlisted = (itemId) => wishlist.includes(itemId);
+
+  // Get total wishlist items
+  const getTotalWishlistItems = () => wishlist.length;
+
   // Provide the context to child components
   return (
     <ShopContext.Provider
@@ -116,6 +143,12 @@ export const ShopContextProvider = ({ children }) => {
         user,
         setUser,
         handleLogout,
+        // Wishlist
+        wishlist,
+        addToWishlist,
+        removeFromWishlist,
+        isWishlisted,
+        getTotalWishlistItems,
       }}
     >
       {children}

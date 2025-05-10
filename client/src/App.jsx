@@ -18,6 +18,7 @@ import Blog from "./pages/Blog";
 import Education from './pages/Education'; 
 import ChatGPT from './components/ChatGPT';
 import Messenger from './components/Messenger';
+import Wishlist from './pages/Wishlist';
 
 
 
@@ -55,6 +56,9 @@ function App() {
           <Route path="/blog" element={<Blog />} /> {/* Add the Blog route */}
           <Route path="/ai" element={<ChatGPT />} />
           <Route path="/messenger" element={<Messenger />} />;
+
+          {/* Wishlist Route */}
+          <Route path="/wishlist" element={<Wishlist />} />
 
           {/* Product Routes */}
           <Route path="/product" element={<Product />}>
