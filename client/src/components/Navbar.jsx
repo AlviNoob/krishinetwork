@@ -17,18 +17,19 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Combined and expanded menu items from both files
-  const menuItems = ['Home', 'Buy', 'Sell', 'Rent', 'Support', 'Blog', 'Education', 'AI'];
+  // Combined and expanded menu items
+  const menuItems = ['Home', 'Buy', 'Sell', 'Rent', 'Support', 'Blog', 'Education', 'AI', 'Messenger'];
 
   useEffect(() => {
     const currentPath = location.pathname === '/' ? 'Home' : location.pathname.split('/')[1];
-    const capitalized = currentPath.charAt(0).toUpperCase() + currentPath.slice(1);
+    const capitalized = currentPath.charAt(0).toUpperCase() + currentPath.slice(1).toLowerCase();
+
     if (menuItems.includes(capitalized) || capitalized === 'Orders') {
       setMenu(capitalized);
     } else {
       setMenu('Home');
     }
-  }, [location]);
+  }, [location, menuItems]);
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
@@ -69,6 +70,7 @@ const Navbar = () => {
             </li>
           );
         })}
+
         {user && (
           <li>
             <Link
