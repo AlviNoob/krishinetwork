@@ -5,6 +5,7 @@ import OrderList from '../components/OrderList';
 import AddExpert from '../components/AddExpert';
 import DescriptionEditor from '../components/DescriptionBox';
 import { Link } from 'react-router-dom';
+import ExpertList from '../components/ExpertList';
 const AdminDashboard = () => {
   const admin = JSON.parse(localStorage.getItem('loggedInUser'));
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -101,7 +102,7 @@ const AdminDashboard = () => {
       {/* Sidebar */}
       <div className="w-64 bg-green-800 text-white p-4 flex flex-col">
         <h1 className="text-2xl font-bold mb-8">Krishi Network</h1>
-        {['dashboard','addProduct','productList','orderList','addExpert'].map(tab => (
+        {['dashboard','addProduct','productList','orderList','addExpert','expertList'].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -115,6 +116,7 @@ const AdminDashboard = () => {
               productList: 'Product List',
               orderList:   'Order List',
               addExpert:   'Add Expert',
+              expertList:   'Expert List',
             }[tab]}
           </button>
         ))}
@@ -156,7 +158,7 @@ const AdminDashboard = () => {
         {activeTab === 'orderList' && <OrderList />}
         {activeTab === 'addExpert' && <AddExpert />}
         {activeTab === 'descriptionEditor' && <DescriptionEditor/>}
-
+        {activeTab === 'expertList' && <ExpertList />}
         {activeTab === 'productList' && (
           <div>
             <h1 className="text-2xl font-bold text-green-800 mb-6">

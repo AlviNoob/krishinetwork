@@ -16,6 +16,9 @@ const Home = () => {
         case 'expert':
           navigate('/dashboard/expert');
           break;
+        case 'seller': // Handle seller role
+          navigate('/dashboard/admin');
+          break;
         case 'user':
         default:
           navigate('/dashboard/user');
