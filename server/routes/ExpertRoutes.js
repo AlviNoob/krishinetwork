@@ -6,6 +6,7 @@ import {
   expertLogout,
   getAllExperts,
   getExpert,
+  toggleExpertAvailability,
   updateExpert
 } from "../controllers/usercontrollers.js";
 
@@ -25,4 +26,7 @@ expertRoutes.get("/:id", getExpert);
 // Update — parse multipart with `photo` field, *then* your controller
 expertRoutes.put("/:id", upload.single("photo"), updateExpert);
 expertRoutes.get("/", getAllExperts); 
+expertRoutes.put("/toggle/:id", toggleExpertAvailability);
+
+
 export default expertRoutes;

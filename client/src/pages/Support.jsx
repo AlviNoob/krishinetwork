@@ -58,9 +58,20 @@ const Support = () => {
               <p className="text-sm text-gray-600 mb-1">
                 <strong>Phone:</strong> {exp.phone}
               </p>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 mb-2">
                 <strong>Description:</strong>{" "}
                 {exp.description || "No description provided"}
+              </p>
+              
+              <p className="text-sm">
+                <strong>Status:</strong>
+                <span
+                  className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                    exp.available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                  }`}
+                >
+                  {exp.available ? 'Available' : 'Unavailable'}
+                </span>
               </p>
             </div>
           ))

@@ -11,6 +11,7 @@ const OrderList = () => {
         const response = await fetch('http://localhost:4000/orders/all');
         if (!response.ok) throw new Error('Failed to fetch orders');
         const data = await response.json();
+        console.log("Orders Data: ", data.orders); // helpful for debugging
         setOrders(data.orders);
       } catch (err) {
         setError(err.message);
@@ -34,7 +35,6 @@ const OrderList = () => {
 
       const data = await res.json();
 
-      // Update UI
       setOrders(prev =>
         prev.map(order =>
           order._id === orderId ? { ...order, status: data.order.status } : order
@@ -71,15 +71,26 @@ const OrderList = () => {
                 className={`border-t hover:bg-gray-50 transition duration-200 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
               >
                 <td className="py-4 px-6 font-mono text-sm text-gray-900">{order._id.slice(-6)}</td>
-                <td className="py-4 px-6">{order.userId}</td>
+                
+                {/* FIXED: Handle userId being an object */}
+                <td className="py-4 px-6">
+                  {typeof order.userId === 'object'
+                    ? order.userId._id || '[Unknown]'
+                    : order.userId}
+                </td>
+
+                {/* FIXED: Defensive rendering for items */}
                 <td className="py-4 px-6 space-y-1">
-                  {order.items.map((item, idx) => (
+                  {order.items?.map((item, idx) => (
                     <div key={idx} className="text-gray-800">
-                      {item.product?.name || item.product} <span className="text-gray-500">(Qty: {item.quantity})</span>
+                      {item.product?.name || item.product || '[Unknown Product]'}{' '}
+                      <span className="text-gray-500">(Qty: {item.quantity})</span>
                     </div>
                   ))}
                 </td>
+
                 <td className="py-4 px-6 font-semibold text-green-700">${order.amount}</td>
+
                 <td className="py-4 px-6">
                   <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium capitalize ${
                     order.status === 'completed' ? 'bg-green-100 text-green-700' :
@@ -100,7 +111,13 @@ const OrderList = () => {
                     </button>
                   )}
                 </td>
-                <td className="py-4 px-6 whitespace-pre-wrap text-gray-700">{order.address}</td>
+
+                {/* FIXED: Handle address as object or string */}
+                <td className="py-4 px-6 whitespace-pre-wrap text-gray-700">
+                  {typeof order.address === 'object'
+                    ? JSON.stringify(order.address)
+                    : order.address || '[No Address]'}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -268,12 +268,27 @@ export const logout = async (req, res) => {
 };
 export const getAllExperts = async (req, res) => {
     try {
-      const experts = await Expert.find({}, "-password -__v").populate("addedBy", "name");
+      const experts = await Expert.find({}, '-password -__v').populate('addedBy', 'name');
       res.status(200).json(experts);
     } catch (error) {
       console.error("Failed to fetch experts:", error.message);
       res.status(500).json({ error: "Failed to fetch experts." });
     }
   };
+  
+export const toggleExpertAvailability = async (req, res) => {
+    try {
+      const expert = await Expert.findById(req.params.id);
+      if (!expert) return res.status(404).json({ error: 'Expert not found' });
+  
+      expert.available = !expert.available;
+      await expert.save();
+      res.status(200).json(expert);
+    } catch (error) {
+      console.error("Failed to toggle availability:", error.message);
+      res.status(500).json({ error: "Failed to toggle availability." });
+    }
+  };
+
 export const sellerLogout = logout;
 export const expertLogout = logout;
