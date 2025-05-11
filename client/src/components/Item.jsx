@@ -17,7 +17,7 @@ const Item = (props) => {
   };
 
   return (
-    <div className="w-[350px] transform transition-transform duration-500 hover:scale-105 relative">
+    <div className="w-full transform transition-transform duration-300 hover:scale-105 relative bg-white rounded-lg overflow-hidden shadow-sm">
       {/* Wishlist Heart Icon */}
       <button
         onClick={handleWishlistClick}
@@ -26,19 +26,21 @@ const Item = (props) => {
       >
         {wishlisted ? '❤️' : '🤍'}
       </button>
-      <Link to={`/product/${props.id}`} onClick={() => window.scrollTo(0, 0)}>
-        <img src={props.image} alt={props.name} className="w-full rounded" />
-      </Link>
-      <p className="mt-2 mb-1 text-gray-800 font-medium">{props.name}</p>
 
-      <div className="flex gap-5 items-center">
-        <div className="text-gray-800 text-lg font-semibold">
-          ${props.new_price}
+      <Link to={`/product/${props.id}`} onClick={() => window.scrollTo(0, 0)}>
+        <img
+          src={props.image}
+          alt={props.name}
+          className="w-full h-48 object-cover rounded-t-lg"
+        />
+        <div className="p-4">
+          <p className="text-gray-800 font-semibold text-base mb-1">{props.name}</p>
+          <div className="flex gap-4 items-center">
+            <div className="text-green-600 font-bold text-lg">${props.new_price}</div>
+            <div className="text-gray-400 line-through text-sm">${props.old_price}</div>
+          </div>
         </div>
-        <div className="text-gray-500 text-lg line-through">
-          ${props.old_price}
-        </div>
-      </div>
+      </Link>
     </div>
   );
 };
