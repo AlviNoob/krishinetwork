@@ -1,9 +1,31 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { ShopContext } from '../context/ShopContext';
 
 const Item = (props) => {
+  const { isWishlisted, addToWishlist, removeFromWishlist } = useContext(ShopContext);
+  const wishlisted = isWishlisted(props.id);
+
+  const handleWishlistClick = (e) => {
+    e.stopPropagation();
+    e.preventDefault();
+    if (wishlisted) {
+      removeFromWishlist(props.id);
+    } else {
+      addToWishlist(props.id);
+    }
+  };
+
   return (
-    <div className="w-[350px] transform transition-transform duration-500 hover:scale-105">
+    <div className="w-[350px] transform transition-transform duration-500 hover:scale-105 relative">
+      {/* Wishlist Heart Icon */}
+      <button
+        onClick={handleWishlistClick}
+        className="absolute top-2 right-2 z-10 text-2xl focus:outline-none"
+        title={wishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+      >
+        {wishlisted ? '❤️' : '🤍'}
+      </button>
       <Link to={`/product/${props.id}`} onClick={() => window.scrollTo(0, 0)}>
         <img src={props.image} alt={props.name} className="w-full rounded" />
       </Link>

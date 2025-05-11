@@ -1,5 +1,5 @@
 import express from 'express';
-import { addProduct, findProductById, getAllProducts, removeProduct, updateProductDescription } from '../controllers/productcontroller.js';
+import { addProduct, findProductById, getAllProducts, removeProduct, updateProductDescription, addProductReview, getProductReviews } from '../controllers/productcontroller.js';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
@@ -32,4 +32,6 @@ productRoutes.get('/all', getAllProducts);
 productRoutes.post('/remove', removeProduct);
 productRoutes.get("/:id", findProductById);
 productRoutes.put("/:id/description", updateProductDescription);
+productRoutes.post('/:id/review', addProductReview);
+productRoutes.get('/:id/reviews', getProductReviews);
 export default productRoutes;

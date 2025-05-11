@@ -145,4 +145,35 @@ export const updateProductDescription = async (req, res) => {
   }
 };
 
+// Add a review to a product
+export const addProductReview = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId, username, rating, comment } = req.body;
+    if (!rating || !comment) {
+      return res.status(400).json({ success: false, message: "Rating and comment required" });
+    }
+    const product = await Product.findOne({ id });
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
+
+    product.reviews.push({ userId, username, rating, comment });
+    await product.save();
+    res.status(201).json({ success: true, reviews: product.reviews });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to add review", error: err.message });
+  }
+};
+
+// Get all reviews for a product
+export const getProductReviews = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await Product.findOne({ id });
+    if (!product) return res.status(404).json({ success: false, message: "Product not found" });
+    res.status(200).json({ success: true, reviews: product.reviews });
+  } catch (err) {
+    res.status(500).json({ success: false, message: "Failed to fetch reviews", error: err.message });
+  }
+};
+
 

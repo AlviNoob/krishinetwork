@@ -4,6 +4,7 @@ import axios from 'axios';
 const Education = () => {
   const [videos, setVideos] = useState([]);
   const [newVideo, setNewVideo] = useState({ title: '', youtubeLink: '' });
+  const [search, setSearch] = useState('');
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
 
   const fetchVideos = async () => {
@@ -40,6 +41,12 @@ const Education = () => {
     return `https://www.youtube.com/embed/${id}`;
   };
 
+  // Filter videos by search
+  const filteredVideos = videos.filter(video =>
+    video.title?.toLowerCase().includes(search.toLowerCase()) ||
+    video.uploader?.toLowerCase().includes(search.toLowerCase())
+  );
+
   return (
     <div className="p-6">
       {loggedInUser?.role === 'expert' && (
@@ -62,20 +69,34 @@ const Education = () => {
         </div>
       )}
 
+      <div className="mb-6 flex items-center gap-2">
+        <input
+          type="text"
+          placeholder="Search videos by title or uploader..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="border p-2 rounded w-full max-w-md"
+        />
+      </div>
+
       <h2 className="text-xl font-bold mb-4">Educational Videos</h2>
-      {videos.map((video) => (
-        <div key={video._id || video.link} className="mb-6">
-          <h3 className="font-semibold">{video.title}</h3>
-          <iframe
-            width="560"
-            height="315"
-            src={getYouTubeEmbedUrl(video.link)}
-            title={video.title}
-            frameBorder="0"
-            allowFullScreen
-          ></iframe>
-        </div>
-      ))}
+      {filteredVideos.length === 0 ? (
+        <p className="text-gray-600">No videos found.</p>
+      ) : (
+        filteredVideos.map((video) => (
+          <div key={video._id || video.link} className="mb-6">
+            <h3 className="font-semibold">{video.title}</h3>
+            <iframe
+              width="560"
+              height="315"
+              src={getYouTubeEmbedUrl(video.link)}
+              title={video.title}
+              frameBorder="0"
+              allowFullScreen
+            ></iframe>
+          </div>
+        ))
+      )}
     </div>
   );
 };

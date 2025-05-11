@@ -10,7 +10,16 @@ const ProductSchema = new mongoose.Schema({
   category:  { type: String, required: true },
   description: { type: String, default: "" },      // ← add this
   date:      { type: Date, default: Date.now },
-  available: { type: Boolean, default: true }
+  available: { type: Boolean, default: true },
+  reviews: [
+    {
+      userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      username: String,
+      rating: { type: Number, required: true },
+      comment: String,
+      date: { type: Date, default: Date.now }
+    }
+  ]
 });
 
 export default mongoose.model("Product", ProductSchema);
