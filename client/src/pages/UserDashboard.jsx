@@ -9,6 +9,7 @@ const UserDashboard = () => {
   const [editMode, setEditMode] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "" });
   const [message, setMessage] = useState("");
+  const [appointments, setAppointments] = useState([]);
   const nameInputRef = useRef(null);
 
   useEffect(() => {
@@ -18,21 +19,27 @@ const UserDashboard = () => {
       return;
     }
 
-    const fetchUserData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/users/id/${storedUser.id}`);
-        const userData = await response.json();
+        // Fetch user data
+        const userResponse = await fetch(`${API_BASE_URL}/users/id/${storedUser.id}`);
+        const userData = await userResponse.json();
         setUser(userData);
-        if (!editMode) {
-          setFormData({ name: userData.name, phone: userData.phone });
-        }
+        setFormData({ name: userData.name, phone: userData.phone });
+
+        // Fetch appointments
+        const appointmentsResponse = await fetch(
+          `${API_BASE_URL}/appointments/user/${storedUser.id}`
+        );
+        const appointmentsData = await appointmentsResponse.json();
+        setAppointments(appointmentsData);
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        console.error("Error fetching data:", error);
       }
     };
 
-    fetchUserData();
-  }, [navigate, editMode]);
+    fetchData();
+  }, [navigate]);
 
   useEffect(() => {
     if (editMode && nameInputRef.current) {
@@ -57,15 +64,13 @@ const UserDashboard = () => {
       });
 
       const data = await response.json();
-      if (!response.ok) {
-        throw new Error(data.error || "Update failed");
-      }
+      if (!response.ok) throw new Error(data.error || "Update failed");
 
       setUser(data);
       setMessage("Profile updated successfully");
       setEditMode(false);
 
-      // Update localStorage user info
+      // Update localStorage
       const stored = JSON.parse(localStorage.getItem("loggedInUser"));
       if (stored) {
         localStorage.setItem(
@@ -80,15 +85,9 @@ const UserDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("loggedInUser");
-    setUser(null);
     navigate("/login");
-    
-    // Ensure state updates instantly
-    setTimeout(() => {
-      window.location.reload();
-    }, 100);
+    setTimeout(() => window.location.reload(), 100);
   };
-  
 
   if (!user) return <div className="text-center mt-10">Loading dashboard...</div>;
 
@@ -157,6 +156,46 @@ const UserDashboard = () => {
           </div>
         )}
         {message && <p className="text-sm mt-2 text-blue-600">{message}</p>}
+      </div>
+
+      {/* Appointments Section */}
+      <div className="mb-6 bg-white p-4 rounded shadow">
+        <h2 className="text-xl font-semibold mb-4">Your Appointments</h2>
+        {appointments.length === 0 ? (
+          <p className="text-gray-600">No appointments booked yet</p>
+        ) : (
+          <div className="space-y-4">
+            {appointments.map((appointment) => (
+              <div key={appointment._id} className="border p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="font-semibold text-lg">
+                    {appointment.expert?.name || "Expert"}
+                  </h3>
+                  <span className={`px-3 py-1 rounded-full text-sm ${
+                    appointment.status === 'accepted' 
+                      ? 'bg-green-100 text-green-700' 
+                      : appointment.status === 'rejected' 
+                        ? 'bg-red-100 text-red-700' 
+                        : 'bg-gray-100 text-gray-700'
+                  }`}>
+                    {appointment.status}
+                  </span>
+                </div>
+                <p className="text-gray-600">
+                  <strong>Date:</strong> {new Date(appointment.date).toLocaleDateString()}
+                </p>
+                <p className="text-gray-600">
+                  <strong>Time:</strong> {appointment.timeSlot}
+                </p>
+                {appointment.expert?.specialization && (
+                  <p className="text-gray-600">
+                    <strong>Specialization:</strong> {appointment.expert.specialization}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
