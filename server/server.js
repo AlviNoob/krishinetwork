@@ -5,7 +5,7 @@ import path from "path";
 import cors from "cors";
 import fs from "fs";
 import session from "express-session";
-
+import appointmentRoutes from "./routes/appointmentRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import sellerRoutes from "./routes/sellerRoutes.js";
 import expertRoutes from "./routes/ExpertRoutes.js";
@@ -47,7 +47,7 @@ app.use('/api/ai', aiRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/messages', messageRoutes);
 
-
+app.use('/appointments', appointmentRoutes);
 // File Upload Setup using multer
 // const storage = multer.diskStorage({
 //     destination: (req, file, cb) => {
