@@ -4,60 +4,48 @@ import Product from '../models/Product.js';
 export const addProduct = async (req, res) => {
   try {
     const products = await Product.find({});
-    let id;
-    if (products.length > 0) {
-      const lastProduct = products[products.length - 1];
-      id = lastProduct.id + 1;
-    } else {
-      id = 1;
+    const id = products.length > 0 ? products[products.length - 1].id + 1 : 1;
+
+    const { name, old_price, new_price, category, available } = req.body;
+
+    // Handle uploaded image file
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: "Image file is required." });
     }
 
-    const { name, new_price, old_price, available, category } = req.body;
-
-    const image = req.file ? `http://localhost:${process.env.PORT || 4000}/images/${req.file.filename}` : null;
+    const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
 
     const product = new Product({
       id,
       name,
-      image,
-      new_price,
       old_price,
+      new_price,
+      category,
       available,
-      category
+      image: base64Image
     });
 
     await product.save();
-    console.log("Product saved:", product);
 
     res.status(201).json({
       success: true,
       message: "Product added successfully",
       product
     });
-
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to add product",
-      error: err.message
-    });
+    res.status(500).json({ success: false, message: "Failed to add product", error: err.message });
   }
 };
 
-// Fetch all products
 export const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find({});
-    console.log("All Products Fetched");
     res.status(200).json(products);
   } catch (err) {
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch products",
-      error: err.message,
-    });
+    res.status(500).json({ message: "Failed to fetch products" });
   }
 };
+
 
 // Remove a product
 export const removeProduct = async (req, res) => {
@@ -175,5 +163,3 @@ export const getProductReviews = async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to fetch reviews", error: err.message });
   }
 };
-
-

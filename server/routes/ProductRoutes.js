@@ -1,37 +1,31 @@
 import express from 'express';
-import { addProduct, findProductById, getAllProducts, removeProduct, updateProductDescription, addProductReview, getProductReviews } from '../controllers/productcontroller.js';
+import {
+  addProduct,
+  findProductById,
+  getAllProducts,
+  removeProduct,
+  updateProductDescription,
+  addProductReview,
+  getProductReviews
+} from '../controllers/productcontroller.js';
+
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-// Set up file upload handling with multer
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadDir = 'uploads/images';
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true }); // Ensure folder exists before saving
-    }
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname)); // Use timestamp for unique filenames
-  }
-});
+const router = express.Router();
 
-const upload = multer({ storage: storage });
+// Choose one: memory storage or disk storage (below is memory)
+const storage = multer.memoryStorage(); // or use diskStorage if needed
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } }); // 5MB limit
 
-const productRoutes = express.Router();
+// ✅ Routes
+router.post('/add', upload.single('file'), addProduct);       // Add product with file upload
+router.get('/all', getAllProducts);                           // Get all products
+router.post('/remove', removeProduct);                        // Remove a product
+router.get('/:id', findProductById);                          // Find a product by ID
+router.put('/:id/description', updateProductDescription);     // Update product description
+router.post('/:id/review', addProductReview);                 // Add review
+router.get('/:id/reviews', getProductReviews);                // Get reviews
 
-// Add Product route
-productRoutes.post('/add', upload.single('productImage'), addProduct);
-
-// Fetch all products route
-productRoutes.get('/all', getAllProducts);
-
-// Remove product route
-productRoutes.post('/remove', removeProduct);
-productRoutes.get("/:id", findProductById);
-productRoutes.put("/:id/description", updateProductDescription);
-productRoutes.post('/:id/review', addProductReview);
-productRoutes.get('/:id/reviews', getProductReviews);
-export default productRoutes;
+export default router;

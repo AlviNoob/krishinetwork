@@ -34,54 +34,22 @@ app.use(session({
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use("/users", userRoutes); 
 app.use("/sellers", sellerRoutes); // ✅ Ensure seller routes are registered
 app.use("/expert", expertRoutes);
 app.use('/products', productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/orders", orderRoutes);
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+
 app.use("/api/blogs", blogRoutes);
 app.use('/api/ai', aiRoutes);
 app.use('/api/education', educationRoutes);
 app.use('/api/messages', messageRoutes);
 
 app.use('/appointments', appointmentRoutes);
-// File Upload Setup using multer
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         const uploadDir = "uploads/images";
-//         if (!fs.existsSync(uploadDir)) {
-//             fs.mkdirSync(uploadDir, { recursive: true }); // Ensure folder exists before saving
-//         }
-//         cb(null, uploadDir);
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, Date.now() + path.extname(file.originalname)); // Use timestamp for unique filenames
-//     }
-// });
 
-// const upload = multer({ storage: storage });
-
-// // Serve static files from the 'uploads/images' directory
-// app.use("/images", express.static("uploads/images"));
-
-// // File upload endpoint
-// app.post("/upload", upload.single("productImage"), (req, res) => {
-//     if (!req.file) {
-//         return res.status(400).json({ success: 0, message: "File upload failed" });
-//     }
-//     // Send back the image URL
-//     res.json({
-//         success: 1,
-//         image_url: `http://localhost:${port}/images/${req.file.filename}`
-//     });
-// });
-app.use(
-    "/images",
-    express.static(path.join(process.cwd(), "uploads", "images"))
-  );
 // MongoDB Connection
 mongoose.connect("mongodb+srv://alvisakiborin:01402864581@cluster0.l9iaiih.mongodb.net/myDatabase")
     .then(() => console.log("Connected to MongoDB"))
@@ -100,5 +68,3 @@ app.listen(port, (error) => {
         console.log(`Server is running on http://localhost:${port}`);
     }
 });
-
-
