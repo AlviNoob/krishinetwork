@@ -7,40 +7,46 @@ import { ShopContext } from '../context/ShopContext';
 const Navbar = () => {
   const {
     getTotalCartItems,
+    getTotalWishlistItems,
     user,
     setUser,
     setIsSeller,
     setIsExpert,
-    getTotalWishlistItems,
   } = useContext(ShopContext);
 
-  const [menu, setMenu] = useState('Home');
   const navigate = useNavigate();
   const location = useLocation();
+  const [menu, setMenu] = useState('Home');
 
-  // Combined and expanded menu items
-  const menuItems = ['Home', 'Buy', 'Sell', 'Rent', 'Support', 'Blog', 'Education', 'AI', 'Messenger'];
+  const menuItems = [
+    'Home',
+    'Buy',
+    'Sell',
+    'Rent',
+    'Support',
+    'Blog',
+    'Education',
+    'AI',
+    'Messenger',
+  ];
 
   useEffect(() => {
     const currentPath = location.pathname === '/' ? 'Home' : location.pathname.split('/')[1];
     const capitalized = currentPath.charAt(0).toUpperCase() + currentPath.slice(1).toLowerCase();
-
     if (menuItems.includes(capitalized) || capitalized === 'Orders') {
       setMenu(capitalized);
     } else {
       setMenu('Home');
     }
-  }, [location, menuItems]);
+  }, [location]);
 
   const handleLogout = () => {
     localStorage.removeItem('loggedInUser');
     localStorage.removeItem('isSeller');
     localStorage.removeItem('isExpert');
-
     setUser(null);
     setIsSeller(false);
     setIsExpert(false);
-
     navigate('/');
     setMenu('Home');
     window.location.reload();
@@ -48,62 +54,85 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center px-4 py-3 bg-white shadow-md flex-wrap">
+      {/* Logo */}
       <div className="flex items-center gap-2 text-xl font-bold text-gray-800">
         <img src={logo} alt="Krishi Network Logo" className="h-12 w-auto" />
         <p>Krishi Network</p>
       </div>
 
-      <div className="flex items-center gap-6">
-        <ul className="flex gap-6">
-          {menuItems.map((item) => (
+      {/* Menu Items */}
+      <ul className="flex gap-5 text-sm font-bold text-green-600 md:text-base flex-wrap">
+        {menuItems.map((item) => {
+          const path = item.toLowerCase();
+          const linkPath = path === 'home' ? '/' : `/${path}`;
+          return (
             <li key={item}>
               <Link
-                to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                to={linkPath}
                 onClick={() => setMenu(item)}
-                className={`text-gray-600 hover:text-green-600 ${
-                  menu === item ? 'text-green-600' : ''
+                className={`hover:text-green-600 ${
+                  menu === item ? 'border-b-2 border-green-600' : ''
                 }`}
               >
                 {item}
               </Link>
             </li>
-          ))}
-        </ul>
-
-        <div className="flex items-center gap-4">
-          <Link to="/wishlist" className="relative">
-            <span role="img" aria-label="wishlist" className="text-2xl">❤️</span>
-            {getTotalWishlistItems() > 0 && (
-              <span className="absolute -top-2 -right-2 bg-pink-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {getTotalWishlistItems()}
-              </span>
-            )}
-          </Link>
-
-          {user ? (
-            <>
-              <Link to="/cart" className="relative">
-                <img src={cart_icon} alt="Cart" className="w-6 h-6" />
-                <span className="absolute -top-2 -right-2 bg-green-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                  {getTotalCartItems()}
-                </span>
-              </Link>
-              <button
-                onClick={handleLogout}
-                className="text-gray-600 hover:text-green-600"
-              >
-                Logout
-              </button>
-            </>
-          ) : (
+          );
+        })}
+        {user && (
+          <li>
             <Link
-              to="/login"
-              className="text-gray-600 hover:text-green-600"
+              to="/orders"
+              onClick={() => setMenu('Orders')}
+              className={`hover:text-green-600 ${
+                menu === 'Orders' ? 'border-b-2 border-green-600' : ''
+              }`}
             >
-              Login
+              My Orders
             </Link>
+          </li>
+        )}
+      </ul>
+
+      {/* Icons and Auth Buttons */}
+      <div className="flex items-center gap-4 mt-3 sm:mt-0">
+        {/* Wishlist */}
+        <Link to="/wishlist" className="relative text-2xl">
+          ❤️
+          {getTotalWishlistItems() > 0 && (
+            <span className="absolute -top-2 -right-2 bg-pink-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
+              {getTotalWishlistItems()}
+            </span>
+          )}
+        </Link>
+
+        {/* Cart */}
+        <div className="relative">
+          <Link to="/cart">
+            <img src={cart_icon} alt="Cart Icon" className="h-7 w-auto" />
+          </Link>
+          {getTotalCartItems() > 0 && (
+            <div className="absolute -top-2 -right-2 w-5 h-5 text-xs font-bold text-white bg-red-600 rounded-full flex items-center justify-center shadow-md">
+              {getTotalCartItems()}
+            </div>
           )}
         </div>
+
+        {/* Auth Buttons */}
+        {user ? (
+          <button
+            className="px-4 py-1 text-sm font-bold text-blue-600 border border-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        ) : (
+          <Link to="/login">
+            <button className="px-4 py-1 text-sm font-bold text-blue-600 border border-blue-600 rounded-full hover:bg-blue-600 hover:text-white transition">
+              Login
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
