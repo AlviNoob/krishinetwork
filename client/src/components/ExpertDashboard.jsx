@@ -46,6 +46,7 @@ const ExpertDashboard = () => {
           password: "",
           photoFile: null
         });
+        setPhotoPreview(expertData.photoUrl || "/default-avatar.png");
       } catch (err) {
         setError(err.message);
       }
@@ -105,13 +106,11 @@ const ExpertDashboard = () => {
       setExpert(updatedExpert);
       setEditMode(false);
       setForm(f => ({ ...f, password: "", photoFile: null }));
-      setPhotoPreview(updatedExpert.photoUrl);
+      setPhotoPreview(updatedExpert.photoUrl || "/default-avatar.png");
 
-      // Update local storage
-      const current = JSON.parse(localStorage.getItem("loggedInUser"));
       localStorage.setItem(
         "loggedInUser",
-        JSON.stringify({ ...current, ...updatedExpert })
+        JSON.stringify({ ...stored, ...updatedExpert })
       );
     } catch (err) {
       setError(err.message);
@@ -131,9 +130,9 @@ const ExpertDashboard = () => {
       if (!res.ok) throw new Error("Failed to update status");
 
       const updatedAppointment = await res.json();
-      setAppointments(prev => prev.map(a => 
-        a._id === appointmentId ? updatedAppointment : a
-      ));
+      setAppointments(prev =>
+        prev.map(a => (a._id === appointmentId ? updatedAppointment : a))
+      );
     } catch (err) {
       console.error("Update error:", err);
     }
@@ -185,7 +184,7 @@ const ExpertDashboard = () => {
           </button>
         </div>
 
-        {/* Profile Section */}
+        {/* Profile Info */}
         <div className="bg-white p-6 rounded-lg shadow mb-8 flex items-center space-x-6">
           <img
             src={photoPreview || "/default-avatar.png"}
@@ -199,7 +198,7 @@ const ExpertDashboard = () => {
           </div>
         </div>
 
-        {/* Consultation Requests */}
+        {/* Appointments Table */}
         <section className="mb-8">
           <h2 className="text-2xl font-semibold mb-4">Consultation Requests</h2>
           <div className="bg-white shadow rounded-lg overflow-auto">
@@ -261,10 +260,10 @@ const ExpertDashboard = () => {
           </div>
         </section>
 
-        {/* Edit Profile Panel */}
+        {/* Edit Panel */}
         {editMode && (
-          <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-end">
-            <div className="w-96 bg-white h-full shadow-xl p-6 overflow-auto">
+          <div className="fixed inset-0 bg-black bg-opacity-30 flex justify-end z-50">
+            <div className="w-96 bg-white h-full shadow-xl p-6 overflow-auto relative">
               <button
                 onClick={() => setEditMode(false)}
                 className="absolute top-4 left-4 text-gray-600 hover:text-black"
